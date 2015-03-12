@@ -1,25 +1,22 @@
-[BITS 16]		;Tells the assembler that its a 16 bit code
-[ORG 0x7C00]	;Origin, tell the assembler that where the code will
-				;be in memory after it is been loaded
+[BITS 16]			;Tells the assembler that its a 16 bit code
+[ORG 0x7C00]		;Origin, tell the assembler that where the code will
+					;be in memory after it is been loaded
 
 MOV SI, NameString 	;Store string pointer to SI
 CALL PrintString	;Call print string procedure
 JMP $ 				;Infinite loop, hang it here.
 
 
-PrintCharacter:	;Procedure to print character on screen
-				;Assume that ASCII value is in register AL
-MOV AH, 0x0E	;Tell BIOS that we need to print one charater on screen.
-MOV BH, 0x00	;Page no.
-MOV BL, 0x07	;Text attribute 0x07 is lightgrey font on black background
-
-INT 0x10	;Call video interrupt
-RET			;Return to calling procedure
+PrintCharacter:		;Procedure to print character on screen
+					;Assume that ASCII value is in register AL
+MOV AH, 0x0E		;Tell BIOS that we need to print one charater on screen.
+INT 0x10	    	;Call video interrupt
+RET			    	;Return to calling procedure
 
 
 
-PrintString:	;Procedure to print string on screen
-				;Assume that string starting pointer is in register SI
+PrintString:		;Procedure to print string on screen
+					;Assume that string starting pointer is in register SI
 
 next_character:		;Lable to fetch next character from string
 MOV AL, [SI]		;Get a byte from string and store in AL register
@@ -33,7 +30,7 @@ RET					;Return from procedure
 
 
 ;Data
-NameString db 'Zishan Ahmad', 0	;My name string ending with 0
+NameString db 'Zishan Ahmad', 0		;My name string ending with 0
 
 TIMES 510 - ($ - $$) db 0	;Fill the rest of sector with 0
 DW 0xAA55					;Add boot signature at the end of bootloader
